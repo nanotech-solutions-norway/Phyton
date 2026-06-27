@@ -1,8 +1,8 @@
-# Python Control Plane Foundation — 15:22, 27.06.2026
+# Python Control Plane Foundation — 15:45, 27.06.2026
 
 ## Purpose
 
-This document defines the foundation and Phase 2 artifact inspection layer for Python execution in `nanotech-solutions-norway/Phyton`.
+This document defines the foundation, artifact inspection, and controlled script expansion layers for Python execution in `nanotech-solutions-norway/Phyton`.
 
 The `Phyton` repository is the Python source of truth. ChatGPT acts as the orchestration layer that instructs which GitHub Actions workflow to run, which logs or artifacts to inspect, and which isolated patch should be applied next. ChatGPT must not assume local Python, local PowerShell, or Android-local runtime access.
 
@@ -15,6 +15,7 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 - External system writes are out of scope.
 - Secrets must not be printed in workflow logs.
 - Python scripts must be selected from a fixed workflow choice list and validated by the repository allowlist.
+- Registry and workflow choices must remain synchronized.
 - Failed workflows must be debugged from GitHub Actions logs and uploaded artifacts before proposing fixes.
 - Write-capable Python workflows require a later explicit phase and approval gate.
 
@@ -23,7 +24,8 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 | Path | Purpose |
 |---|---|
 | `python/scripts/` | Registered Python scripts that may be executed through the manual workflow. |
-| `python/tools/` | Internal runner, allowlist, diagnostic, artifact inspection, and failure classification utilities. |
+| `python/templates/` | Templates for future registered scripts. |
+| `python/tools/` | Internal runner, allowlist, diagnostic, artifact inspection, failure classification, and registry validation utilities. |
 | `python/examples/` | Read-only examples and future non-production references. |
 | `python/tests/` | pytest tests and execution guardrails. |
 | `python/requirements.txt` | Runtime dependencies for controlled scripts. |
@@ -32,6 +34,7 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 | `.github/workflows/manual-python-run-script.yml` | Manual registered-script execution workflow. |
 | `.github/workflows/manual-python-debug.yml` | Manual sanitized debug workflow. |
 | `.github/workflows/manual-python-inspect-artifacts.yml` | Manual artifact inspection and failure triage workflow. |
+| `.github/workflows/manual-python-validate-registry.yml` | Manual registry synchronization validation workflow. |
 
 ## Workflows
 
@@ -66,7 +69,7 @@ Expected artifact:
 
 - `python-script-output`
 
-Registered foundation script:
+Current registered script:
 
 - `hello_control_plane`
 
@@ -97,6 +100,19 @@ Expected artifact:
 
 - `python-artifact-inspection-report`
 
+### Manual - Python Validate Registry
+
+Purpose:
+
+1. Validate `SCRIPT_ALLOWLIST`.
+2. Validate that registered script files exist under `python/scripts/`.
+3. Validate that `.github/workflows/manual-python-run-script.yml` script choices match `SCRIPT_ALLOWLIST`.
+4. Upload JSON and Markdown registry reports.
+
+Expected artifact:
+
+- `python-registry-validation-report`
+
 ## Dependency strategy
 
 The foundation uses two requirements files:
@@ -110,15 +126,19 @@ The workflows use pip caching based on both requirements files. New dependencies
 
 The manual run workflow exposes only fixed `workflow_dispatch` choices. The selected value is validated again by `python/tools/script_allowlist.py`.
 
-A script is not runnable merely because it exists under `python/scripts/`. To register a new script, the allowlist and workflow input list must both be patched, then the Python quality gate must pass.
+A script is not runnable merely because it exists under `python/scripts/`. To register a new script, the allowlist and workflow input list must both be patched, then the Python quality gate and registry validation workflow must pass.
 
 ## Artifact inspection policy
 
 Artifact inspection is local-artifact only. The Phase 2 workflow does not download prior workflow artifacts or fetch external logs. When the user provides a failed workflow log ZIP, ChatGPT must inspect that evidence before patching.
 
+## Registry validation policy
+
+The script registry must validate before a new registered script is considered available. The validator checks script keys, script paths, file existence, workflow choices, and workflow default values.
+
 ## Debug policy
 
-Debug and inspection workflows must collect artifacts instead of printing broad state. They may print tool versions and sanitized summaries. They must not print:
+Debug, inspection, and registry workflows must collect artifacts instead of printing broad state. They may print tool versions and sanitized summaries. They must not print:
 
 - secrets;
 - tokens;
