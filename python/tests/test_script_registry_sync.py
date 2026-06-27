@@ -72,7 +72,8 @@ def test_validate_registry_detects_workflow_mismatch(tmp_path: Path) -> None:
     report = validate_registry(tmp_path)
 
     assert report.status == "failed"
-    assert "Workflow script_name options must match SCRIPT_ALLOWLIST exactly." in report.errors
+    expected_error = "Workflow script_name options must match SCRIPT_ALLOWLIST exactly."
+    assert expected_error in report.errors
 
 
 def test_write_report_files(tmp_path: Path) -> None:
