@@ -1,4 +1,4 @@
-# ChatGPT Python Orchestrator Commands — 15:05, 27.06.2026
+# ChatGPT Python Orchestrator Commands — 15:22, 27.06.2026
 
 ## Command: Python: run quality gate instructions
 
@@ -51,6 +51,23 @@ Expected result:
 - Artifact `python-debug-artifacts` is available.
 - No secrets are printed.
 
+## Command: Python: inspect artifacts
+
+Use when the user wants a local artifact inspection report or Phase 2 validation.
+
+Action for ChatGPT:
+
+1. Instruct the user to run `Manual - Python Inspect Artifacts`.
+2. Select `target_environment=development`.
+3. Select `inspection_mode=sample` for baseline validation.
+4. Review `python-artifact-inspection-report` after completion.
+5. If the report indicates `attention_required`, inspect the generated Markdown/JSON report before patching.
+
+Expected result:
+
+- Workflow succeeds.
+- Artifact contains `inspection-report.json`, `inspection-report.md`, `pytest-stdout.txt`, and `pytest-exit-code.txt`.
+
 ## Command: Python: inspect Python workflow logs
 
 Use when the user uploads a GitHub Actions log ZIP.
@@ -59,7 +76,7 @@ Action for ChatGPT:
 
 1. Read the log ZIP.
 2. Identify failing workflow, job, and step.
-3. Separate dependency failures, syntax failures, test failures, GitHub Actions syntax failures, and policy guardrail failures.
+3. Separate dependency failures, syntax/import failures, lint/format failures, mypy failures, pytest failures, workflow configuration failures, and policy guardrail failures.
 4. Recommend one minimal patch or a no-change rerun if the issue is transient.
 5. Provide the next validation sequence.
 
@@ -81,10 +98,11 @@ Minimum validation:
 1. `CI - Python Quality Gate`
 2. `Manual - Python Debug`
 3. `Manual - Python Run Script`
+4. `Manual - Python Inspect Artifacts`
 
 ## Command: Python: continue next safe phase
 
-Use when the foundation has passed all validations.
+Use when the current phase has passed all validations.
 
 Action for ChatGPT:
 
@@ -94,16 +112,19 @@ Action for ChatGPT:
 4. Keep write-capable Python operations deferred unless explicitly approved.
 5. Provide exact workflow inputs for the next validation run.
 
-## Foundation validation order
+## Phase 2 validation order
 
 1. `CI - Python Quality Gate`
 2. `Manual - Python Debug`
    - `target_environment=development`
-   - `diagnostic_level=baseline`
+   - `diagnostic_level=repository`
 3. `Manual - Python Run Script`
    - `script_name=hello_control_plane`
    - `target_environment=development`
    - `run_mode=read_only`
+4. `Manual - Python Inspect Artifacts`
+   - `target_environment=development`
+   - `inspection_mode=sample`
 
 ## Cross-repository validation note
 
