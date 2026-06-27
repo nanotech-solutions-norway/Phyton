@@ -1,6 +1,6 @@
-# Python GitHub Control Plane — 15:45, 27.06.2026
+# Python GitHub Control Plane — 00:10, 28.06.2026
 
-This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, and controlled script expansion layer for NanoTech Solutions Norway projects.
+This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, and read-only repository intelligence layer for NanoTech Solutions Norway projects.
 
 Repository name: `nanotech-solutions-norway/Phyton`
 
@@ -43,6 +43,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `docs/CHATGPT_PYTHON_ORCHESTRATOR_COMMANDS.md` | ChatGPT orchestration commands. |
 | `docs/PHASE2_ARTIFACT_INSPECTION_AND_FAILURE_TRIAGE.md` | Phase 2 artifact inspection and triage specification. |
 | `docs/PHASE3_CONTROLLED_SCRIPT_EXPANSION.md` | Phase 3 controlled script expansion specification. |
+| `docs/PHASE4_READ_ONLY_REPOSITORY_INTELLIGENCE.md` | Phase 4 repository intelligence specification. |
 
 ## Workflows
 
@@ -54,13 +55,23 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `Manual - Python Inspect Artifacts` | Read-only local artifact inspection and failure classification. |
 | `Manual - Python Validate Registry` | Validate allowlist and workflow script choices stay synchronized. |
 
+## Registered scripts
+
+| Script key | Purpose |
+|---|---|
+| `hello_control_plane` | Foundation validation script. |
+| `repository_inventory` | Repository file inventory report. |
+| `workflow_inventory` | GitHub Actions workflow inventory report. |
+| `dependency_inventory` | Python dependency file inventory report. |
+
 ## Validation order
 
 1. Run `CI - Python Quality Gate`.
 2. Run `Manual - Python Debug` with `target_environment=development`, `diagnostic_level=repository`.
 3. Run `Manual - Python Run Script` with `script_name=hello_control_plane`, `target_environment=development`, `run_mode=read_only`.
-4. Run `Manual - Python Inspect Artifacts` with `target_environment=development`, `inspection_mode=sample`.
-5. Run `Manual - Python Validate Registry` with `target_environment=development`.
+4. Run `Manual - Python Run Script` for each Phase 4 inventory script with `target_environment=development`, `run_mode=read_only`.
+5. Run `Manual - Python Inspect Artifacts` with `target_environment=development`, `inspection_mode=sample`.
+6. Run `Manual - Python Validate Registry` with `target_environment=development`.
 
 ## Out of scope
 
