@@ -18,7 +18,9 @@ XML_SUFFIXES = {".xml"}
 def parse_args() -> argparse.Namespace:
     """Parse inspection arguments."""
 
-    parser = argparse.ArgumentParser(description="Inspect Python artifacts and reports.")
+    parser = argparse.ArgumentParser(
+        description="Inspect Python artifacts and reports."
+    )
     parser.add_argument(
         "--input-dir",
         action="append",
@@ -149,7 +151,11 @@ def summarize(inspections: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def write_markdown(path: Path, summary: dict[str, Any], inspections: list[dict[str, Any]]) -> None:
+def write_markdown(
+    path: Path,
+    summary: dict[str, Any],
+    inspections: list[dict[str, Any]],
+) -> None:
     """Write a Markdown inspection report."""
 
     lines = [
