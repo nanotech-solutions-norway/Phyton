@@ -5,14 +5,14 @@ on:
     branches: [ main ]
     paths:
       - "python/**"
-      - ".github/workflows/ci-python-quality.yml"
+      - ".github/workflows/*.yml"
       - "docs/**"
       - "README.md"
   pull_request:
     branches: [ main ]
     paths:
       - "python/**"
-      - ".github/workflows/ci-python-quality.yml"
+      - ".github/workflows/*.yml"
       - "docs/**"
       - "README.md"
   workflow_dispatch:
