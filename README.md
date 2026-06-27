@@ -1,6 +1,6 @@
-# Python GitHub Control Plane — 15:22, 27.06.2026
+# Python GitHub Control Plane — 15:45, 27.06.2026
 
-This repository is the separate Python execution, testing, debugging, validation, artifact inspection, and failure triage control-plane layer for NanoTech Solutions Norway projects.
+This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, and controlled script expansion layer for NanoTech Solutions Norway projects.
 
 Repository name: `nanotech-solutions-norway/Phyton`
 
@@ -21,13 +21,15 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 - Failed workflows must be diagnosed from GitHub Actions logs or uploaded artifacts before patching.
 - Arbitrary shell command inputs are not allowed.
 - Registered scripts must be selected from a fixed allowlist.
+- Registry and workflow choices must remain synchronized.
 
 ## Repository structure
 
 | Path | Purpose |
 |---|---|
 | `python/scripts/` | Registered Python scripts for manual GitHub Actions execution. |
-| `python/tools/` | Allowlist, runner, diagnostics, artifact inspection, and failure classification tools. |
+| `python/templates/` | Templates for future registered scripts. |
+| `python/tools/` | Allowlist, runner, diagnostics, artifact inspection, failure classification, and registry validation tools. |
 | `python/examples/` | Non-production examples. |
 | `python/tests/` | pytest tests and execution guardrails. |
 | `python/requirements.txt` | Runtime dependencies. |
@@ -36,9 +38,11 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `.github/workflows/manual-python-run-script.yml` | Manual registered-script runner. |
 | `.github/workflows/manual-python-debug.yml` | Manual debug workflow. |
 | `.github/workflows/manual-python-inspect-artifacts.yml` | Manual artifact inspection and failure triage workflow. |
+| `.github/workflows/manual-python-validate-registry.yml` | Manual registry synchronization validation workflow. |
 | `docs/PYTHON_CONTROL_PLANE.md` | Control-plane specification. |
 | `docs/CHATGPT_PYTHON_ORCHESTRATOR_COMMANDS.md` | ChatGPT orchestration commands. |
 | `docs/PHASE2_ARTIFACT_INSPECTION_AND_FAILURE_TRIAGE.md` | Phase 2 artifact inspection and triage specification. |
+| `docs/PHASE3_CONTROLLED_SCRIPT_EXPANSION.md` | Phase 3 controlled script expansion specification. |
 
 ## Workflows
 
@@ -48,6 +52,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `Manual - Python Debug` | Sanitized Python diagnostics and artifact upload. |
 | `Manual - Python Run Script` | Development-only registered Python script execution. |
 | `Manual - Python Inspect Artifacts` | Read-only local artifact inspection and failure classification. |
+| `Manual - Python Validate Registry` | Validate allowlist and workflow script choices stay synchronized. |
 
 ## Validation order
 
@@ -55,6 +60,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 2. Run `Manual - Python Debug` with `target_environment=development`, `diagnostic_level=repository`.
 3. Run `Manual - Python Run Script` with `script_name=hello_control_plane`, `target_environment=development`, `run_mode=read_only`.
 4. Run `Manual - Python Inspect Artifacts` with `target_environment=development`, `inspection_mode=sample`.
+5. Run `Manual - Python Validate Registry` with `target_environment=development`.
 
 ## Out of scope
 
