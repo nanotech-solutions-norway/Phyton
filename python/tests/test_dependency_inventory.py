@@ -41,7 +41,8 @@ def test_collect_dependency_inventory(tmp_path: Path) -> None:
     python_dir = tmp_path / "python"
     python_dir.mkdir()
     (python_dir / "requirements.txt").write_text("\n", encoding="utf-8")
-    (python_dir / "requirements-dev.txt").write_text("pytest>=8.4,<9\n", encoding="utf-8")
+    dev_requirements = python_dir / "requirements-dev.txt"
+    dev_requirements.write_text("pytest>=8.4,<9\n", encoding="utf-8")
 
     inventory = collect_dependency_inventory(tmp_path)
 
