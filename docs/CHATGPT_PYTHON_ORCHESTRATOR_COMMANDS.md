@@ -1,4 +1,4 @@
-# ChatGPT Python Orchestrator Commands — 15:22, 27.06.2026
+# ChatGPT Python Orchestrator Commands — 15:45, 27.06.2026
 
 ## Command: Python: run quality gate instructions
 
@@ -16,15 +16,15 @@ Expected result:
 - Workflow succeeds.
 - Artifact `python-quality-test-results` is available.
 
-## Command: Python: run approved script
+## Command: Python: run registered script
 
-Use when the user wants to execute a repository-registered Python script.
+Use when the user wants to run a repository-registered Python script.
 
 Action for ChatGPT:
 
-1. Confirm the script exists in the documented allowlist.
+1. Confirm the script exists in the documented registry.
 2. Instruct the user to run `Manual - Python Run Script`.
-3. Select `script_name=hello_control_plane` for foundation validation.
+3. Select `script_name=hello_control_plane` for current validation.
 4. Select `target_environment=development`.
 5. Select `run_mode=read_only`.
 6. Inspect `python-script-output` after completion.
@@ -68,6 +68,22 @@ Expected result:
 - Workflow succeeds.
 - Artifact contains `inspection-report.json`, `inspection-report.md`, `pytest-stdout.txt`, and `pytest-exit-code.txt`.
 
+## Command: Python: validate registry
+
+Use when the user wants to validate registered Python scripts, workflow choices, or Phase 3.
+
+Action for ChatGPT:
+
+1. Instruct the user to run `Manual - Python Validate Registry`.
+2. Select `target_environment=development`.
+3. Review `python-registry-validation-report` after completion.
+4. If the report status is `failed`, inspect `registry-validation-report.json` before patching.
+
+Expected result:
+
+- Workflow succeeds.
+- Artifact contains `registry-validation-report.json`, `registry-validation-report.md`, and `stdout.txt`.
+
 ## Command: Python: inspect Python workflow logs
 
 Use when the user uploads a GitHub Actions log ZIP.
@@ -80,18 +96,19 @@ Action for ChatGPT:
 4. Recommend one minimal patch or a no-change rerun if the issue is transient.
 5. Provide the next validation sequence.
 
-## Command: Python: add new approved script
+## Command: Python: add new registered script
 
-Use when the user wants a new Python script executable through GitHub Actions.
+Use when the user wants a new Python script added to the registry.
 
 Action for ChatGPT:
 
-1. Create the script under `python/scripts/`.
-2. Add tests under `python/tests/`.
-3. Add the script to `SCRIPT_ALLOWLIST` in `python/tools/script_allowlist.py`.
-4. Add the same script key to the `manual-python-run-script.yml` workflow_dispatch choices.
-5. Keep the script development-only unless a later approved phase adds stronger gates.
-6. Run the full validation sequence.
+1. Copy `python/templates/approved_script_template.py` into `python/scripts/` with a new script name.
+2. Replace `SCRIPT_NAME` in the copied script.
+3. Add tests under `python/tests/`.
+4. Add the script to `SCRIPT_ALLOWLIST` in `python/tools/script_allowlist.py`.
+5. Add the same script key to the `manual-python-run-script.yml` workflow_dispatch choices.
+6. Keep the script development-only unless a later approved phase adds stronger gates.
+7. Run the full validation sequence, including registry validation.
 
 Minimum validation:
 
@@ -99,6 +116,7 @@ Minimum validation:
 2. `Manual - Python Debug`
 3. `Manual - Python Run Script`
 4. `Manual - Python Inspect Artifacts`
+5. `Manual - Python Validate Registry`
 
 ## Command: Python: continue next safe phase
 
@@ -112,7 +130,7 @@ Action for ChatGPT:
 4. Keep write-capable Python operations deferred unless explicitly approved.
 5. Provide exact workflow inputs for the next validation run.
 
-## Phase 2 validation order
+## Phase 3 validation order
 
 1. `CI - Python Quality Gate`
 2. `Manual - Python Debug`
@@ -125,6 +143,8 @@ Action for ChatGPT:
 4. `Manual - Python Inspect Artifacts`
    - `target_environment=development`
    - `inspection_mode=sample`
+5. `Manual - Python Validate Registry`
+   - `target_environment=development`
 
 ## Cross-repository validation note
 
