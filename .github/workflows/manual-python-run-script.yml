@@ -10,6 +10,9 @@ on:
         default: hello_control_plane
         options:
           - hello_control_plane
+          - repository_inventory
+          - workflow_inventory
+          - dependency_inventory
       target_environment:
         description: "Target environment"
         required: true
