@@ -1,8 +1,8 @@
-# Python Control Plane Foundation — 15:45, 27.06.2026
+# Python Control Plane Foundation — 00:10, 28.06.2026
 
 ## Purpose
 
-This document defines the foundation, artifact inspection, and controlled script expansion layers for Python execution in `nanotech-solutions-norway/Phyton`.
+This document defines the foundation, artifact inspection, controlled script expansion, and read-only repository intelligence layers for Python execution in `nanotech-solutions-norway/Phyton`.
 
 The `Phyton` repository is the Python source of truth. ChatGPT acts as the orchestration layer that instructs which GitHub Actions workflow to run, which logs or artifacts to inspect, and which isolated patch should be applied next. ChatGPT must not assume local Python, local PowerShell, or Android-local runtime access.
 
@@ -23,7 +23,7 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 
 | Path | Purpose |
 |---|---|
-| `python/scripts/` | Registered Python scripts that may be executed through the manual workflow. |
+| `python/scripts/` | Registered Python scripts that may be used through the manual workflow. |
 | `python/templates/` | Templates for future registered scripts. |
 | `python/tools/` | Internal runner, allowlist, diagnostic, artifact inspection, failure classification, and registry validation utilities. |
 | `python/examples/` | Read-only examples and future non-production references. |
@@ -31,7 +31,7 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 | `python/requirements.txt` | Runtime dependencies for controlled scripts. |
 | `python/requirements-dev.txt` | Validation dependencies for pytest, Ruff, and mypy. |
 | `.github/workflows/ci-python-quality.yml` | Python quality gate. |
-| `.github/workflows/manual-python-run-script.yml` | Manual registered-script execution workflow. |
+| `.github/workflows/manual-python-run-script.yml` | Manual registered-script workflow. |
 | `.github/workflows/manual-python-debug.yml` | Manual sanitized debug workflow. |
 | `.github/workflows/manual-python-inspect-artifacts.yml` | Manual artifact inspection and failure triage workflow. |
 | `.github/workflows/manual-python-validate-registry.yml` | Manual registry synchronization validation workflow. |
@@ -59,19 +59,22 @@ Expected artifact:
 
 Purpose:
 
-1. Run only a fixed workflow_dispatch script option.
+1. Use only a fixed workflow_dispatch script option.
 2. Enforce `target_environment=development`.
 3. Enforce `run_mode=read_only`.
 4. Resolve the selected script through `python/tools/script_allowlist.py`.
-5. Execute the selected script and upload JSON/stdout artifacts.
+5. Produce JSON/stdout artifacts.
 
 Expected artifact:
 
 - `python-script-output`
 
-Current registered script:
+Current registered scripts:
 
 - `hello_control_plane`
+- `repository_inventory`
+- `workflow_inventory`
+- `dependency_inventory`
 
 ### Manual - Python Debug
 
@@ -126,7 +129,11 @@ The workflows use pip caching based on both requirements files. New dependencies
 
 The manual run workflow exposes only fixed `workflow_dispatch` choices. The selected value is validated again by `python/tools/script_allowlist.py`.
 
-A script is not runnable merely because it exists under `python/scripts/`. To register a new script, the allowlist and workflow input list must both be patched, then the Python quality gate and registry validation workflow must pass.
+A script is not available merely because it exists under `python/scripts/`. To register a new script, the allowlist and workflow input list must both be patched, then the Python quality gate and registry validation workflow must pass.
+
+## Repository intelligence policy
+
+Phase 4 inventory scripts are repository-local and report-producing. They may inspect repository files, workflow YAML files, and Python requirements files. They must not use secrets, deploy software, or modify project data.
 
 ## Artifact inspection policy
 
