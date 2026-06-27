@@ -1,4 +1,4 @@
-# ChatGPT Python Orchestrator Commands — 15:45, 27.06.2026
+# ChatGPT Python Orchestrator Commands — 00:10, 28.06.2026
 
 ## Command: Python: run quality gate instructions
 
@@ -24,15 +24,17 @@ Action for ChatGPT:
 
 1. Confirm the script exists in the documented registry.
 2. Instruct the user to run `Manual - Python Run Script`.
-3. Select `script_name=hello_control_plane` for current validation.
+3. Select one registered script key.
 4. Select `target_environment=development`.
 5. Select `run_mode=read_only`.
 6. Inspect `python-script-output` after completion.
 
-Expected result:
+Current registered script keys:
 
-- Workflow succeeds.
-- Artifact contains `run-summary.json`, `hello-control-plane-output.json`, and `stdout.txt`.
+- `hello_control_plane`
+- `repository_inventory`
+- `workflow_inventory`
+- `dependency_inventory`
 
 ## Command: Python: debug failed run
 
@@ -70,7 +72,7 @@ Expected result:
 
 ## Command: Python: validate registry
 
-Use when the user wants to validate registered Python scripts, workflow choices, or Phase 3.
+Use when the user wants to validate registered Python scripts, workflow choices, or registry state.
 
 Action for ChatGPT:
 
@@ -130,7 +132,7 @@ Action for ChatGPT:
 4. Keep write-capable Python operations deferred unless explicitly approved.
 5. Provide exact workflow inputs for the next validation run.
 
-## Phase 3 validation order
+## Phase 4 validation order
 
 1. `CI - Python Quality Gate`
 2. `Manual - Python Debug`
@@ -140,10 +142,22 @@ Action for ChatGPT:
    - `script_name=hello_control_plane`
    - `target_environment=development`
    - `run_mode=read_only`
-4. `Manual - Python Inspect Artifacts`
+4. `Manual - Python Run Script`
+   - `script_name=repository_inventory`
+   - `target_environment=development`
+   - `run_mode=read_only`
+5. `Manual - Python Run Script`
+   - `script_name=workflow_inventory`
+   - `target_environment=development`
+   - `run_mode=read_only`
+6. `Manual - Python Run Script`
+   - `script_name=dependency_inventory`
+   - `target_environment=development`
+   - `run_mode=read_only`
+7. `Manual - Python Inspect Artifacts`
    - `target_environment=development`
    - `inspection_mode=sample`
-5. `Manual - Python Validate Registry`
+8. `Manual - Python Validate Registry`
    - `target_environment=development`
 
 ## Cross-repository validation note
