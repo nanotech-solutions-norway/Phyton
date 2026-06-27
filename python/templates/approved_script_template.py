@@ -23,7 +23,9 @@ def build_payload() -> dict[str, str]:
     )
 
     if target_environment != "development":
-        raise RuntimeError("Registered scripts must remain development-only by default.")
+        raise RuntimeError(
+            "Registered scripts must remain development-only by default."
+        )
 
     return {
         "status": "success",
