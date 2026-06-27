@@ -1,0 +1,92 @@
+name: Manual - Python Inspect Artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        default: development
+        options:
+          - development
+      inspection_mode:
+        description: "Inspection mode"
+        required: true
+        type: choice
+        default: sample
+        options:
+          - sample
+          - repository
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  inspect-python-artifacts:
+    name: Inspect Python artifacts
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target_environment }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: "pip"
+          cache-dependency-path: |
+            python/requirements.txt
+            python/requirements-dev.txt
+
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -r python/requirements.txt
+          python -m pip install -r python/requirements-dev.txt
+
+      - name: Enforce inspection policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.target_environment }}" != "development" ]; then
+            echo "Phase 2 inspection only permits target_environment=development."
+            exit 1
+          fi
+
+      - name: Generate local pytest report for inspection
+        shell: bash
+        run: |
+          set +e
+          mkdir -p TestResults/python artifacts/python-inspection
+          python -m pytest python/tests --junitxml=TestResults/python/pytest-results.xml > artifacts/python-inspection/pytest-stdout.txt 2>&1
+          pytest_status=$?
+          echo "${pytest_status}" > artifacts/python-inspection/pytest-exit-code.txt
+          set -e
+          echo "Pytest exit status captured for inspection: ${pytest_status}"
+
+      - name: Inspect local artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m python.tools.inspect_test_results \
+            --input-dir TestResults \
+            --input-dir artifacts/python-inspection \
+            --output-dir artifacts/python-inspection \
+            --mode "${{ inputs.inspection_mode }}"
+
+      - name: Upload Python artifact inspection report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-artifact-inspection-report
+          path: artifacts/python-inspection/**
+          if-no-files-found: warn
