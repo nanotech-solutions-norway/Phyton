@@ -82,6 +82,8 @@ def test_main_writes_reports(tmp_path: Path, monkeypatch) -> None:  # type: igno
 
     assert main() == 0
 
-    report = json.loads((output_dir / "inspection-report.json").read_text(encoding="utf-8"))
+    report = json.loads(
+        (output_dir / "inspection-report.json").read_text(encoding="utf-8")
+    )
     assert report["summary"]["files_inspected"] == 1
     assert (output_dir / "inspection-report.md").is_file()
