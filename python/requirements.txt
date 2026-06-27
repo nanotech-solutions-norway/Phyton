@@ -1,0 +1,2 @@
+# Runtime dependencies for controlled Python scripts.
+# Foundation phase intentionally uses the Python standard library only.
