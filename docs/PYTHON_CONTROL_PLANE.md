@@ -1,15 +1,15 @@
-# Python Control Plane Foundation — 15:05, 27.06.2026
+# Python Control Plane Foundation — 15:22, 27.06.2026
 
 ## Purpose
 
-This document defines the foundation layer for Python execution in `nanotech-solutions-norway/Phyton`.
+This document defines the foundation and Phase 2 artifact inspection layer for Python execution in `nanotech-solutions-norway/Phyton`.
 
 The `Phyton` repository is the Python source of truth. ChatGPT acts as the orchestration layer that instructs which GitHub Actions workflow to run, which logs or artifacts to inspect, and which isolated patch should be applied next. ChatGPT must not assume local Python, local PowerShell, or Android-local runtime access.
 
 ## Operating posture
 
 - GitHub Actions is the execution runtime.
-- The foundation phase is development-only.
+- The current layers are development-only.
 - Production writes are out of scope.
 - Staging writes are out of scope.
 - External system writes are out of scope.
@@ -23,7 +23,7 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 | Path | Purpose |
 |---|---|
 | `python/scripts/` | Registered Python scripts that may be executed through the manual workflow. |
-| `python/tools/` | Internal runner, allowlist, and diagnostic utilities. |
+| `python/tools/` | Internal runner, allowlist, diagnostic, artifact inspection, and failure classification utilities. |
 | `python/examples/` | Read-only examples and future non-production references. |
 | `python/tests/` | pytest tests and execution guardrails. |
 | `python/requirements.txt` | Runtime dependencies for controlled scripts. |
@@ -31,6 +31,7 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 | `.github/workflows/ci-python-quality.yml` | Python quality gate. |
 | `.github/workflows/manual-python-run-script.yml` | Manual registered-script execution workflow. |
 | `.github/workflows/manual-python-debug.yml` | Manual sanitized debug workflow. |
+| `.github/workflows/manual-python-inspect-artifacts.yml` | Manual artifact inspection and failure triage workflow. |
 
 ## Workflows
 
@@ -82,6 +83,20 @@ Expected artifact:
 
 - `python-debug-artifacts`
 
+### Manual - Python Inspect Artifacts
+
+Purpose:
+
+1. Generate a local pytest XML report for inspection.
+2. Capture pytest stdout and exit status.
+3. Inspect local XML/text/JSON artifacts.
+4. Classify local findings into standard failure categories.
+5. Upload JSON and Markdown inspection reports.
+
+Expected artifact:
+
+- `python-artifact-inspection-report`
+
 ## Dependency strategy
 
 The foundation uses two requirements files:
@@ -89,7 +104,7 @@ The foundation uses two requirements files:
 - `python/requirements.txt` for runtime dependencies.
 - `python/requirements-dev.txt` for validation dependencies.
 
-The workflows use pip caching based on both requirements files. New dependencies should be added only when needed by a registered script or validation layer. Private package indexes, credentials, and authenticated package installation remain out of scope for the foundation phase.
+The workflows use pip caching based on both requirements files. New dependencies should be added only when needed by a registered script or validation layer. Private package indexes, credentials, and authenticated package installation remain out of scope.
 
 ## Script allowlist policy
 
@@ -97,9 +112,13 @@ The manual run workflow exposes only fixed `workflow_dispatch` choices. The sele
 
 A script is not runnable merely because it exists under `python/scripts/`. To register a new script, the allowlist and workflow input list must both be patched, then the Python quality gate must pass.
 
+## Artifact inspection policy
+
+Artifact inspection is local-artifact only. The Phase 2 workflow does not download prior workflow artifacts or fetch external logs. When the user provides a failed workflow log ZIP, ChatGPT must inspect that evidence before patching.
+
 ## Debug policy
 
-Debug workflows must collect artifacts instead of printing broad state. They may print tool versions and sanitized summaries. They must not print:
+Debug and inspection workflows must collect artifacts instead of printing broad state. They may print tool versions and sanitized summaries. They must not print:
 
 - secrets;
 - tokens;
