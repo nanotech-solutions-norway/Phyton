@@ -72,11 +72,7 @@ def extract_workflow_script_options(workflow_path: Path) -> WorkflowScriptOption
             script_input_indent = indent
             continue
 
-        if (
-            in_script_input
-            and indent <= script_input_indent
-            and stripped.endswith(":")
-        ):
+        if in_script_input and indent <= script_input_indent and stripped.endswith(":"):
             break
 
         if not in_script_input:
