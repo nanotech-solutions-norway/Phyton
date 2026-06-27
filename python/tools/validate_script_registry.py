@@ -72,7 +72,11 @@ def extract_workflow_script_options(workflow_path: Path) -> WorkflowScriptOption
             script_input_indent = indent
             continue
 
-        if in_script_input and indent <= script_input_indent and stripped.endswith(":"):
+        if (
+            in_script_input
+            and indent <= script_input_indent
+            and stripped.endswith(":")
+        ):
             break
 
         if not in_script_input:
@@ -118,7 +122,9 @@ def validate_registry(repo_root: Path | None = None) -> RegistryValidationReport
         if any(token in script_name for token in ("/", "\\", "..")):
             errors.append(f"Script name is unsafe: {script_name}")
         if not relative_path.startswith("python/scripts/"):
-            errors.append(f"Script path must stay under python/scripts: {relative_path}")
+            errors.append(
+                f"Script path must stay under python/scripts: {relative_path}"
+            )
         if relative_path in seen_paths:
             errors.append(f"Duplicate script path registered: {relative_path}")
         seen_paths.add(relative_path)
@@ -127,7 +133,7 @@ def validate_registry(repo_root: Path | None = None) -> RegistryValidationReport
         try:
             script_path.relative_to(scripts_dir)
         except ValueError:
-            errors.append(f"Script path escaped python/scripts: {relative_path}")
+            errors.append(f"Script path is outside python/scripts: {relative_path}")
         if script_path.suffix != ".py":
             errors.append(f"Script path must point to a Python file: {relative_path}")
         if not script_path.is_file():
@@ -148,7 +154,9 @@ def validate_registry(repo_root: Path | None = None) -> RegistryValidationReport
                 "Workflow script_name options must match SCRIPT_ALLOWLIST exactly."
             )
         if default_script not in set(allowlist_scripts):
-            errors.append("Workflow script_name default must exist in SCRIPT_ALLOWLIST.")
+            errors.append(
+                "Workflow script_name default must exist in SCRIPT_ALLOWLIST."
+            )
 
     status = "success" if not errors else "failed"
     return RegistryValidationReport(
