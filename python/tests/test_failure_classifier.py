@@ -16,7 +16,10 @@ from python.tools.classify_failure import classify_text
         ("mypy error: incompatible return value type", "typing_failure"),
         ("pytest failed with AssertionError", "pytest_failure"),
         ("Invalid workflow file: yaml syntax", "workflow_configuration_failure"),
-        ("Foundation phase only permits target_environment=development", "policy_guardrail_failure"),
+        (
+            "Foundation phase only permits target_environment=development",
+            "policy_guardrail_failure",
+        ),
         ('{"status": "success"}', "no_failure_detected"),
     ],
 )
