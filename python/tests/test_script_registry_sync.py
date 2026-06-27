@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from python.tools.script_allowlist import SCRIPT_ALLOWLIST
 from python.tools.validate_script_registry import (
     extract_workflow_script_options,
     validate_registry,
@@ -42,6 +43,15 @@ on:
     )
 
 
+def write_registered_script_files(repo_root: Path) -> None:
+    """Write placeholder script files for the current allowlist."""
+
+    for relative_path in SCRIPT_ALLOWLIST.values():
+        script_path = repo_root / relative_path
+        script_path.parent.mkdir(parents=True, exist_ok=True)
+        script_path.write_text("print('placeholder')\n", encoding="utf-8")
+
+
 def test_current_repository_registry_is_synchronized() -> None:
     report = validate_registry(Path.cwd())
 
@@ -61,9 +71,7 @@ def test_extract_workflow_script_options(tmp_path: Path) -> None:
 
 
 def test_validate_registry_detects_workflow_mismatch(tmp_path: Path) -> None:
-    script_path = tmp_path / "python" / "scripts" / "hello_control_plane.py"
-    script_path.parent.mkdir(parents=True, exist_ok=True)
-    script_path.write_text("print('hello')\n", encoding="utf-8")
+    write_registered_script_files(tmp_path)
     write_manual_workflow(
         tmp_path / ".github" / "workflows" / "manual-python-run-script.yml",
         ["different_script"],
@@ -77,12 +85,10 @@ def test_validate_registry_detects_workflow_mismatch(tmp_path: Path) -> None:
 
 
 def test_write_report_files(tmp_path: Path) -> None:
-    script_path = tmp_path / "python" / "scripts" / "hello_control_plane.py"
-    script_path.parent.mkdir(parents=True, exist_ok=True)
-    script_path.write_text("print('hello')\n", encoding="utf-8")
+    write_registered_script_files(tmp_path)
     write_manual_workflow(
         tmp_path / ".github" / "workflows" / "manual-python-run-script.yml",
-        ["hello_control_plane"],
+        list(SCRIPT_ALLOWLIST),
     )
     output_dir = tmp_path / "artifacts"
     report = validate_registry(tmp_path)
