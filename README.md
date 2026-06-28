@@ -1,6 +1,6 @@
-# Python GitHub Control Plane — 00:10, 28.06.2026
+# Python GitHub Control Plane — 14:35, 28.06.2026
 
-This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, and read-only repository intelligence layer for NanoTech Solutions Norway projects.
+This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, and repository health-report layer for NanoTech Solutions Norway projects.
 
 Repository name: `nanotech-solutions-norway/Phyton`
 
@@ -22,6 +22,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 - Arbitrary shell command inputs are not allowed.
 - Registered scripts must be selected from a fixed allowlist.
 - Registry and workflow choices must remain synchronized.
+- Full validation now runs automatically on relevant pushes.
 
 ## Repository structure
 
@@ -35,6 +36,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `python/requirements.txt` | Runtime dependencies. |
 | `python/requirements-dev.txt` | Development validation dependencies. |
 | `.github/workflows/ci-python-quality.yml` | Python quality gate. |
+| `.github/workflows/ci-python-full-validation.yml` | Automatic full validation workflow. |
 | `.github/workflows/manual-python-run-script.yml` | Manual registered-script runner. |
 | `.github/workflows/manual-python-debug.yml` | Manual debug workflow. |
 | `.github/workflows/manual-python-inspect-artifacts.yml` | Manual artifact inspection and failure triage workflow. |
@@ -44,12 +46,14 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `docs/PHASE2_ARTIFACT_INSPECTION_AND_FAILURE_TRIAGE.md` | Phase 2 artifact inspection and triage specification. |
 | `docs/PHASE3_CONTROLLED_SCRIPT_EXPANSION.md` | Phase 3 controlled script expansion specification. |
 | `docs/PHASE4_READ_ONLY_REPOSITORY_INTELLIGENCE.md` | Phase 4 repository intelligence specification. |
+| `docs/PHASE5_REPOSITORY_HEALTH_REPORT.md` | Phase 5 repository health report specification. |
 
 ## Workflows
 
 | Workflow | Purpose |
 |---|---|
 | `CI - Python Quality Gate` | Ruff format check, Ruff lint, mypy, pytest. |
+| `CI - Python Full Validation` | Automatic full validation, registered script runs, artifact inspection, registry validation. |
 | `Manual - Python Debug` | Sanitized Python diagnostics and artifact upload. |
 | `Manual - Python Run Script` | Development-only registered Python script execution. |
 | `Manual - Python Inspect Artifacts` | Read-only local artifact inspection and failure classification. |
@@ -63,13 +67,18 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `repository_inventory` | Repository file inventory report. |
 | `workflow_inventory` | GitHub Actions workflow inventory report. |
 | `dependency_inventory` | Python dependency file inventory report. |
+| `repository_health_report` | Consolidated repository health report. |
 
 ## Validation order
 
+Default validation now runs through `CI - Python Full Validation` on relevant pushes.
+
+Manual fallback validation:
+
 1. Run `CI - Python Quality Gate`.
-2. Run `Manual - Python Debug` with `target_environment=development`, `diagnostic_level=repository`.
-3. Run `Manual - Python Run Script` with `script_name=hello_control_plane`, `target_environment=development`, `run_mode=read_only`.
-4. Run `Manual - Python Run Script` for each Phase 4 inventory script with `target_environment=development`, `run_mode=read_only`.
+2. Run `CI - Python Full Validation`.
+3. Run `Manual - Python Debug` with `target_environment=development`, `diagnostic_level=repository`.
+4. Run `Manual - Python Run Script` with `script_name=repository_health_report`, `target_environment=development`, `run_mode=read_only`.
 5. Run `Manual - Python Inspect Artifacts` with `target_environment=development`, `inspection_mode=sample`.
 6. Run `Manual - Python Validate Registry` with `target_environment=development`.
 
