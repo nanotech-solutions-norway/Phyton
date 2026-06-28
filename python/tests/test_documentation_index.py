@@ -31,6 +31,8 @@ def test_readme_indexes_required_documents() -> None:
 
 def test_indexed_documents_exist() -> None:
     repo_root = Path.cwd()
-    missing = [path for path in REQUIRED_INDEX_PATHS if not (repo_root / path).is_file()]
+    missing = [
+        path for path in REQUIRED_INDEX_PATHS if not (repo_root / path).is_file()
+    ]
 
     assert missing == []
