@@ -50,6 +50,8 @@ def test_workflows_cache_expected_dependency_files() -> None:
         content = read_workflow(workflow_path)
         for dependency_path in EXPECTED_CACHE_DEPENDENCY_PATHS:
             if dependency_path not in content:
-                failures.append(f"{workflow_path}: missing cache path {dependency_path}")
+                failures.append(
+                    f"{workflow_path}: missing cache path {dependency_path}"
+                )
 
     assert failures == []
