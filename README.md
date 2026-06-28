@@ -1,6 +1,6 @@
-# Python GitHub Control Plane — 16:45, 28.06.2026
+# Python GitHub Control Plane — 16:55, 28.06.2026
 
-This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, control-plane readiness, and operations handoff layer for NanoTech Solutions Norway projects.
+This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, control-plane readiness, operations handoff, and validation evidence index layer for NanoTech Solutions Norway projects.
 
 Repository name: `nanotech-solutions-norway/Phyton`
 
@@ -49,6 +49,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `docs/PHASE5_REPOSITORY_HEALTH_REPORT.md` | Phase 5 repository health report specification. |
 | `docs/PHASE6_CONTROL_PLANE_READINESS.md` | Phase 6 control-plane readiness specification. |
 | `docs/PHASE7_OPERATIONS_HANDOFF.md` | Phase 7 operations handoff pack. |
+| `docs/PHASE8_VALIDATION_EVIDENCE_INDEX.md` | Phase 8 validation evidence index. |
 
 ## Workflows
 
