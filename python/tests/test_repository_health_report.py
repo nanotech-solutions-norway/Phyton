@@ -27,7 +27,10 @@ def write_minimal_workflow(path: Path, script_options: list[str] | None = None) 
 
     path.parent.mkdir(parents=True, exist_ok=True)
     if script_options is None:
-        path.write_text("name: Example\njobs:\n  test:\n    runs-on: ubuntu-latest\n", encoding="utf-8")
+        path.write_text(
+            "name: Example\njobs:\n  test:\n    runs-on: ubuntu-latest\n",
+            encoding="utf-8",
+        )
         return
 
     options = "\n".join(f"          - {script}" for script in script_options)
@@ -79,7 +82,8 @@ def write_required_files(repo_root: Path) -> None:
     python_dir = repo_root / "python"
     python_dir.mkdir(exist_ok=True)
     (python_dir / "requirements.txt").write_text("\n", encoding="utf-8")
-    (python_dir / "requirements-dev.txt").write_text("pytest>=8.4,<9\n", encoding="utf-8")
+    dev_requirements = python_dir / "requirements-dev.txt"
+    dev_requirements.write_text("pytest>=8.4,<9\n", encoding="utf-8")
 
 
 def test_classify_health() -> None:
