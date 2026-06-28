@@ -1,6 +1,6 @@
-# Python GitHub Control Plane — 14:35, 28.06.2026
+# Python GitHub Control Plane — 15:50, 28.06.2026
 
-This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, and repository health-report layer for NanoTech Solutions Norway projects.
+This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, and control-plane readiness layer for NanoTech Solutions Norway projects.
 
 Repository name: `nanotech-solutions-norway/Phyton`
 
@@ -47,6 +47,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `docs/PHASE3_CONTROLLED_SCRIPT_EXPANSION.md` | Phase 3 controlled script expansion specification. |
 | `docs/PHASE4_READ_ONLY_REPOSITORY_INTELLIGENCE.md` | Phase 4 repository intelligence specification. |
 | `docs/PHASE5_REPOSITORY_HEALTH_REPORT.md` | Phase 5 repository health report specification. |
+| `docs/PHASE6_CONTROL_PLANE_READINESS.md` | Phase 6 control-plane readiness specification. |
 
 ## Workflows
 
@@ -68,6 +69,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `workflow_inventory` | GitHub Actions workflow inventory report. |
 | `dependency_inventory` | Python dependency file inventory report. |
 | `repository_health_report` | Consolidated repository health report. |
+| `control_plane_readiness` | Control-plane readiness report. |
 
 ## Validation order
 
@@ -79,8 +81,9 @@ Manual fallback validation:
 2. Run `CI - Python Full Validation`.
 3. Run `Manual - Python Debug` with `target_environment=development`, `diagnostic_level=repository`.
 4. Run `Manual - Python Run Script` with `script_name=repository_health_report`, `target_environment=development`, `run_mode=read_only`.
-5. Run `Manual - Python Inspect Artifacts` with `target_environment=development`, `inspection_mode=sample`.
-6. Run `Manual - Python Validate Registry` with `target_environment=development`.
+5. Run `Manual - Python Run Script` with `script_name=control_plane_readiness`, `target_environment=development`, `run_mode=read_only`.
+6. Run `Manual - Python Inspect Artifacts` with `target_environment=development`, `inspection_mode=sample`.
+7. Run `Manual - Python Validate Registry` with `target_environment=development`.
 
 ## Out of scope
 
