@@ -1,8 +1,8 @@
-# Python Control Plane Foundation — 00:10, 28.06.2026
+# Python Control Plane Foundation — 14:35, 28.06.2026
 
 ## Purpose
 
-This document defines the foundation, artifact inspection, controlled script expansion, and read-only repository intelligence layers for Python execution in `nanotech-solutions-norway/Phyton`.
+This document defines the foundation, artifact inspection, controlled script expansion, read-only repository intelligence, and repository health-report layers for Python execution in `nanotech-solutions-norway/Phyton`.
 
 The `Phyton` repository is the Python source of truth. ChatGPT acts as the orchestration layer that instructs which GitHub Actions workflow to run, which logs or artifacts to inspect, and which isolated patch should be applied next. ChatGPT must not assume local Python, local PowerShell, or Android-local runtime access.
 
@@ -16,6 +16,7 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 - Secrets must not be printed in workflow logs.
 - Python scripts must be selected from a fixed workflow choice list and validated by the repository allowlist.
 - Registry and workflow choices must remain synchronized.
+- Full validation now runs automatically on relevant pushes.
 - Failed workflows must be debugged from GitHub Actions logs and uploaded artifacts before proposing fixes.
 - Write-capable Python workflows require a later explicit phase and approval gate.
 
@@ -31,6 +32,7 @@ The `Phyton` repository is the Python source of truth. ChatGPT acts as the orche
 | `python/requirements.txt` | Runtime dependencies for controlled scripts. |
 | `python/requirements-dev.txt` | Validation dependencies for pytest, Ruff, and mypy. |
 | `.github/workflows/ci-python-quality.yml` | Python quality gate. |
+| `.github/workflows/ci-python-full-validation.yml` | Automatic full validation workflow. |
 | `.github/workflows/manual-python-run-script.yml` | Manual registered-script workflow. |
 | `.github/workflows/manual-python-debug.yml` | Manual sanitized debug workflow. |
 | `.github/workflows/manual-python-inspect-artifacts.yml` | Manual artifact inspection and failure triage workflow. |
@@ -55,6 +57,21 @@ Expected artifact:
 
 - `python-quality-test-results`
 
+### CI - Python Full Validation
+
+Purpose:
+
+1. Run quality-gate checks.
+2. Run pytest with XML output.
+3. Run all registered baseline and report scripts.
+4. Inspect generated validation artifacts.
+5. Validate registry synchronization.
+6. Upload full validation artifacts.
+
+Expected artifact:
+
+- `python-full-validation-artifacts`
+
 ### Manual - Python Run Script
 
 Purpose:
@@ -75,6 +92,7 @@ Current registered scripts:
 - `repository_inventory`
 - `workflow_inventory`
 - `dependency_inventory`
+- `repository_health_report`
 
 ### Manual - Python Debug
 
@@ -134,6 +152,10 @@ A script is not available merely because it exists under `python/scripts/`. To r
 ## Repository intelligence policy
 
 Phase 4 inventory scripts are repository-local and report-producing. They may inspect repository files, workflow YAML files, and Python requirements files. They must not use secrets, deploy software, or modify project data.
+
+## Repository health policy
+
+Phase 5 health reports consolidate inventory, dependency, workflow, and registry checks. The report can classify the repository as `healthy`, `manual_review_required`, or `attention_required`.
 
 ## Artifact inspection policy
 
