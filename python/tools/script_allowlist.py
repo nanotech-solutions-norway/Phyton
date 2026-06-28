@@ -7,6 +7,7 @@ from pathlib import Path
 SCRIPT_ALLOWLIST: dict[str, str] = {
     "dependency_inventory": "python/scripts/dependency_inventory.py",
     "hello_control_plane": "python/scripts/hello_control_plane.py",
+    "repository_health_report": "python/scripts/repository_health_report.py",
     "repository_inventory": "python/scripts/repository_inventory.py",
     "workflow_inventory": "python/scripts/workflow_inventory.py",
 }
