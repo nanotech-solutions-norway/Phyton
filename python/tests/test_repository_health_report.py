@@ -106,6 +106,14 @@ def test_find_unregistered_scripts(tmp_path: Path) -> None:
     assert find_unregistered_scripts(tmp_path) == ["python/scripts/extra.py"]
 
 
+def test_find_unregistered_scripts_ignores_package_marker(tmp_path: Path) -> None:
+    write_registered_script_files(tmp_path)
+    package_marker = tmp_path / "python" / "scripts" / "__init__.py"
+    package_marker.write_text("\n", encoding="utf-8")
+
+    assert find_unregistered_scripts(tmp_path) == []
+
+
 def test_build_health_report_healthy_fixture(tmp_path: Path) -> None:
     write_registered_script_files(tmp_path)
     write_required_files(tmp_path)
