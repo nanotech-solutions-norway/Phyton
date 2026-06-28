@@ -1,6 +1,6 @@
-# Python GitHub Control Plane — 20:55, 28.06.2026
+# Python GitHub Control Plane — 21:10, 28.06.2026
 
-This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, control-plane readiness, operations handoff, validation evidence index, project instructions, deferred capability roadmap, test coverage, documentation index guardrails, workflow policy guardrails, registered script path guardrails, artifact contract guardrails, workflow trigger guardrails, dependency file guardrails, and Python runtime version guardrails layer for NanoTech Solutions Norway projects.
+This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, control-plane readiness, operations handoff, validation evidence index, project instructions, deferred capability roadmap, test coverage, documentation index guardrails, workflow policy guardrails, registered script path guardrails, artifact contract guardrails, workflow trigger guardrails, dependency file guardrails, Python runtime version guardrails, and write boundary guardrails layer for NanoTech Solutions Norway projects.
 
 Repository name: `nanotech-solutions-norway/Phyton`
 
@@ -60,6 +60,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `python/tests/test_workflow_triggers.py` | Phase 16 workflow trigger guardrail tests. |
 | `python/tests/test_dependency_policy.py` | Phase 17 dependency file guardrail tests. |
 | `python/tests/test_python_runtime_policy.py` | Phase 18 Python runtime version guardrail tests. |
+| `python/tests/test_write_boundary_policy.py` | Phase 19 write boundary guardrail tests. |
 
 ## Workflows
 
