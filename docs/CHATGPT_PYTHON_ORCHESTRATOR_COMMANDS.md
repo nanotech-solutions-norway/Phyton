@@ -1,20 +1,34 @@
-# ChatGPT Python Orchestrator Commands — 00:10, 28.06.2026
+# ChatGPT Python Orchestrator Commands — 14:35, 28.06.2026
 
 ## Command: Python: run quality gate instructions
 
-Use when the user wants the baseline Python validation run.
+Use when the user wants baseline Python validation.
 
 Action for ChatGPT:
 
-1. Instruct the user to open GitHub Actions in `nanotech-solutions-norway/Phyton`.
-2. Run `CI - Python Quality Gate`.
-3. Ask for the workflow result and, if failed, the GitHub Actions log ZIP or relevant artifact.
-4. Do not propose code changes until logs or artifacts have been inspected.
+1. Instruct the user to review `CI - Python Quality Gate` in `nanotech-solutions-norway/Phyton`.
+2. If failed, request the GitHub Actions log ZIP or relevant artifact.
+3. Do not propose code changes until logs or artifacts have been inspected.
 
 Expected result:
 
 - Workflow succeeds.
 - Artifact `python-quality-test-results` is available.
+
+## Command: Python: run full validation
+
+Use for default validation after Phase 5.
+
+Action for ChatGPT:
+
+1. Use `CI - Python Full Validation` as the primary validation workflow.
+2. Review `python-full-validation-artifacts` after completion.
+3. If failed, inspect the workflow log ZIP and uploaded artifacts before patching.
+
+Expected result:
+
+- Workflow succeeds.
+- Artifact `python-full-validation-artifacts` is available.
 
 ## Command: Python: run registered script
 
@@ -23,7 +37,7 @@ Use when the user wants to run a repository-registered Python script.
 Action for ChatGPT:
 
 1. Confirm the script exists in the documented registry.
-2. Instruct the user to run `Manual - Python Run Script`.
+2. Instruct the user to run `Manual - Python Run Script` if manual execution is needed.
 3. Select one registered script key.
 4. Select `target_environment=development`.
 5. Select `run_mode=read_only`.
@@ -35,6 +49,7 @@ Current registered script keys:
 - `repository_inventory`
 - `workflow_inventory`
 - `dependency_inventory`
+- `repository_health_report`
 
 ## Command: Python: debug failed run
 
@@ -43,7 +58,7 @@ Use when any Python workflow fails.
 Action for ChatGPT:
 
 1. Request the failed workflow log ZIP or uploaded artifacts.
-2. Run `Manual - Python Debug` with `target_environment=development`.
+2. Run `Manual - Python Debug` with `target_environment=development` if additional diagnostics are needed.
 3. Start with `diagnostic_level=baseline`.
 4. Escalate to `diagnostic_level=dependencies` or `diagnostic_level=repository` only when needed.
 5. Patch only the smallest isolated layer after evidence is reviewed.
@@ -55,14 +70,14 @@ Expected result:
 
 ## Command: Python: inspect artifacts
 
-Use when the user wants a local artifact inspection report or Phase 2 validation.
+Use when the user wants a local artifact inspection report or validation support.
 
 Action for ChatGPT:
 
-1. Instruct the user to run `Manual - Python Inspect Artifacts`.
-2. Select `target_environment=development`.
-3. Select `inspection_mode=sample` for baseline validation.
-4. Review `python-artifact-inspection-report` after completion.
+1. Use `CI - Python Full Validation` artifact inspection output when available.
+2. For manual fallback, run `Manual - Python Inspect Artifacts`.
+3. Select `target_environment=development`.
+4. Select `inspection_mode=sample` for baseline validation.
 5. If the report indicates `attention_required`, inspect the generated Markdown/JSON report before patching.
 
 Expected result:
@@ -76,9 +91,9 @@ Use when the user wants to validate registered Python scripts, workflow choices,
 
 Action for ChatGPT:
 
-1. Instruct the user to run `Manual - Python Validate Registry`.
-2. Select `target_environment=development`.
-3. Review `python-registry-validation-report` after completion.
+1. Prefer the registry validation result inside `CI - Python Full Validation`.
+2. For manual fallback, run `Manual - Python Validate Registry`.
+3. Select `target_environment=development`.
 4. If the report status is `failed`, inspect `registry-validation-report.json` before patching.
 
 Expected result:
@@ -115,10 +130,8 @@ Action for ChatGPT:
 Minimum validation:
 
 1. `CI - Python Quality Gate`
-2. `Manual - Python Debug`
-3. `Manual - Python Run Script`
-4. `Manual - Python Inspect Artifacts`
-5. `Manual - Python Validate Registry`
+2. `CI - Python Full Validation`
+3. `Manual - Python Validate Registry` when manual confirmation is needed.
 
 ## Command: Python: continue next safe phase
 
@@ -128,36 +141,30 @@ Action for ChatGPT:
 
 1. Review current artifacts and latest workflow status.
 2. Confirm no production write capability was introduced.
-3. Propose the smallest next phase.
+3. Propose or deploy the smallest next phase.
 4. Keep write-capable Python operations deferred unless explicitly approved.
-5. Provide exact workflow inputs for the next validation run.
+5. Use `CI - Python Full Validation` as the default validation route.
 
-## Phase 4 validation order
+## Phase 5 validation order
+
+Default validation:
+
+1. `CI - Python Full Validation`
+
+Manual fallback validation:
 
 1. `CI - Python Quality Gate`
 2. `Manual - Python Debug`
    - `target_environment=development`
    - `diagnostic_level=repository`
 3. `Manual - Python Run Script`
-   - `script_name=hello_control_plane`
+   - `script_name=repository_health_report`
    - `target_environment=development`
    - `run_mode=read_only`
-4. `Manual - Python Run Script`
-   - `script_name=repository_inventory`
-   - `target_environment=development`
-   - `run_mode=read_only`
-5. `Manual - Python Run Script`
-   - `script_name=workflow_inventory`
-   - `target_environment=development`
-   - `run_mode=read_only`
-6. `Manual - Python Run Script`
-   - `script_name=dependency_inventory`
-   - `target_environment=development`
-   - `run_mode=read_only`
-7. `Manual - Python Inspect Artifacts`
+4. `Manual - Python Inspect Artifacts`
    - `target_environment=development`
    - `inspection_mode=sample`
-8. `Manual - Python Validate Registry`
+5. `Manual - Python Validate Registry`
    - `target_environment=development`
 
 ## Cross-repository validation note
