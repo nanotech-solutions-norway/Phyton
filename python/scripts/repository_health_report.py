@@ -32,6 +32,7 @@ REQUIRED_WORKFLOWS = (
     ".github/workflows/manual-python-inspect-artifacts.yml",
     ".github/workflows/manual-python-validate-registry.yml",
 )
+NON_EXECUTABLE_SCRIPT_FILES = {"__init__.py"}
 
 
 def enforce_development_environment() -> None:
@@ -60,7 +61,7 @@ def check_required_paths(
 
 
 def find_unregistered_scripts(repo_root: Path) -> list[str]:
-    """Return scripts under python/scripts that are not in SCRIPT_ALLOWLIST."""
+    """Return executable scripts that are not in SCRIPT_ALLOWLIST."""
 
     scripts_dir = repo_root / "python" / "scripts"
     registered_paths = set(SCRIPT_ALLOWLIST.values())
@@ -69,6 +70,8 @@ def find_unregistered_scripts(repo_root: Path) -> list[str]:
         return ["Missing scripts directory: python/scripts"]
 
     for script_path in sorted(scripts_dir.glob("*.py")):
+        if script_path.name in NON_EXECUTABLE_SCRIPT_FILES:
+            continue
         relative_path = str(script_path.relative_to(repo_root))
         if relative_path not in registered_paths:
             unregistered.append(relative_path)
