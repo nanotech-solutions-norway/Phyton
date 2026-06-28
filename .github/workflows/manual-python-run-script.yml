@@ -13,6 +13,7 @@ on:
           - repository_inventory
           - workflow_inventory
           - dependency_inventory
+          - repository_health_report
       target_environment:
         description: "Target environment"
         required: true
