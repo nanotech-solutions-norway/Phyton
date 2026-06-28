@@ -1,0 +1,117 @@
+name: CI - Python Full Validation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "python/**"
+      - ".github/workflows/*.yml"
+      - "docs/**"
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  python-full-validation:
+    name: Python full validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: "pip"
+          cache-dependency-path: |
+            python/requirements.txt
+            python/requirements-dev.txt
+
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -r python/requirements.txt
+          python -m pip install -r python/requirements-dev.txt
+
+      - name: Run Ruff format check
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m ruff format --check python
+
+      - name: Run Ruff lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m ruff check python
+
+      - name: Run mypy typing validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m mypy python/scripts python/tools
+
+      - name: Run pytest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p TestResults/python-full-validation
+          python -m pytest python/tests --junitxml=TestResults/python-full-validation/pytest-results.xml
+
+      - name: Run registered scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts=(
+            hello_control_plane
+            repository_inventory
+            workflow_inventory
+            dependency_inventory
+            repository_health_report
+          )
+          for script_name in "${scripts[@]}"; do
+            mkdir -p "artifacts/python-full-validation/${script_name}"
+            python -m python.tools.run_allowed_script \
+              --script "${script_name}" \
+              --target-environment development \
+              --output-dir "artifacts/python-full-validation/${script_name}" \
+              | tee "artifacts/python-full-validation/${script_name}/stdout.txt"
+          done
+
+      - name: Inspect validation artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m python.tools.inspect_test_results \
+            --input-dir TestResults \
+            --input-dir artifacts/python-full-validation \
+            --output-dir artifacts/python-full-validation/inspection \
+            --mode repository
+
+      - name: Validate registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m python.tools.validate_script_registry \
+            --output-dir artifacts/python-full-validation/registry \
+            | tee artifacts/python-full-validation/registry/stdout.txt
+
+      - name: Upload Python full validation artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-full-validation-artifacts
+          path: |
+            TestResults/python-full-validation/**
+            artifacts/python-full-validation/**
+          if-no-files-found: warn
