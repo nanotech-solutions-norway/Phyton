@@ -45,7 +45,11 @@ def enforce_development_environment() -> None:
         raise RuntimeError("Phase 5 health reports are development-only.")
 
 
-def check_required_paths(repo_root: Path, paths: tuple[str, ...], label: str) -> list[str]:
+def check_required_paths(
+    repo_root: Path,
+    paths: tuple[str, ...],
+    label: str,
+) -> list[str]:
     """Return findings for missing required paths."""
 
     findings = []
