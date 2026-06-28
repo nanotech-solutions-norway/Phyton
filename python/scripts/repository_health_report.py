@@ -95,8 +95,12 @@ def build_health_report(repo_root: Path) -> dict[str, Any]:
 
     findings = []
     warnings = []
-    findings.extend(check_required_paths(repo_root, REQUIRED_DOCS, "documentation file"))
-    findings.extend(check_required_paths(repo_root, REQUIRED_WORKFLOWS, "workflow file"))
+    findings.extend(
+        check_required_paths(repo_root, REQUIRED_DOCS, "documentation file")
+    )
+    findings.extend(
+        check_required_paths(repo_root, REQUIRED_WORKFLOWS, "workflow file")
+    )
 
     unregistered_scripts = find_unregistered_scripts(repo_root)
     if unregistered_scripts:
