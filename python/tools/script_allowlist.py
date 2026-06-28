@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 SCRIPT_ALLOWLIST: dict[str, str] = {
+    "control_plane_release_report": "python/scripts/control_plane_release_report.py",
     "dependency_inventory": "python/scripts/dependency_inventory.py",
     "hello_control_plane": "python/scripts/hello_control_plane.py",
     "repository_health_report": "python/scripts/repository_health_report.py",
