@@ -1,6 +1,6 @@
-# Python GitHub Control Plane — 20:05, 28.06.2026
+# Python GitHub Control Plane — 20:15, 28.06.2026
 
-This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, control-plane readiness, operations handoff, validation evidence index, project instructions, deferred capability roadmap, test coverage, documentation index guardrails, and workflow policy guardrails layer for NanoTech Solutions Norway projects.
+This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, control-plane readiness, operations handoff, validation evidence index, project instructions, deferred capability roadmap, test coverage, documentation index guardrails, workflow policy guardrails, and registered script path guardrails layer for NanoTech Solutions Norway projects.
 
 Repository name: `nanotech-solutions-norway/Phyton`
 
@@ -55,6 +55,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `python/tests/test_control_plane_readiness.py` | Phase 11 readiness helper test coverage. |
 | `python/tests/test_documentation_index.py` | Phase 12 documentation index guardrail tests. |
 | `python/tests/test_workflow_policy.py` | Phase 13 workflow policy guardrail tests. |
+| `python/tests/test_script_path_policy.py` | Phase 14 registered script path guardrail tests. |
 
 ## Workflows
 
