@@ -96,7 +96,9 @@ def build_readiness_report(repo_root: Path) -> dict[str, Any]:
 
     health_report = build_health_report(repo_root)
     findings = []
-    findings.extend(check_required_paths(repo_root, REQUIRED_DOCS, "readiness file"))
+    findings.extend(
+        check_required_paths(repo_root, REQUIRED_DOCS, "readiness file")
+    )
     findings.extend(check_required_scripts())
     findings.extend(
         check_workflow_mentions(repo_root, MANUAL_RUN_WORKFLOW, SCRIPT_NAME)
