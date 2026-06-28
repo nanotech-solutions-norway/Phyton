@@ -102,6 +102,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p artifacts/python-full-validation/registry
           python -m python.tools.validate_script_registry \
             --output-dir artifacts/python-full-validation/registry \
             | tee artifacts/python-full-validation/registry/stdout.txt
