@@ -70,6 +70,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `python/tests/test_out_of_scope_readme_index.py` | Phase 26 out-of-scope README guardrail tests. |
 | `python/tests/test_purpose_readme_index.py` | Phase 27 purpose README guardrail tests. |
 | `python/tests/test_repository_structure_readme_index.py` | Phase 28 repository structure README guardrail tests. |
+| `python/tests/test_workflows_section_readme_index.py` | Phase 29 workflows section README guardrail tests. |
 
 ## Workflows
 
