@@ -14,7 +14,10 @@ REQUIRED_OPERATING_POSTURE_TOKENS = (
     "- No staging writes.",
     "- No external system writes.",
     "- No secret exposure.",
-    "- Failed workflows must be diagnosed from GitHub Actions logs or uploaded artifacts before patching.",
+    (
+        "- Failed workflows must be diagnosed from GitHub Actions logs or uploaded "
+        "artifacts before patching."
+    ),
     "- Arbitrary shell command inputs are not allowed.",
     "- Registered scripts must be selected from a fixed allowlist.",
     "- Registry and workflow choices must remain synchronized.",
