@@ -32,6 +32,33 @@ ARTIFACT_CONTRACTS = {
     ),
 }
 
+REGISTERED_SCRIPT_ARTIFACTS = {
+    "python/scripts/control_plane_readiness.py": (
+        "control-plane-readiness.json",
+        "control-plane-readiness.md",
+    ),
+    "python/scripts/dependency_inventory.py": (
+        "dependency-inventory.json",
+        "dependency-inventory.md",
+    ),
+    "python/scripts/hello_control_plane.py": (
+        "hello-control-plane-output.json",
+        "hello-control-plane-output.md",
+    ),
+    "python/scripts/repository_health_report.py": (
+        "repository-health-report.json",
+        "repository-health-report.md",
+    ),
+    "python/scripts/repository_inventory.py": (
+        "repository-inventory.json",
+        "repository-inventory.md",
+    ),
+    "python/scripts/workflow_inventory.py": (
+        "workflow-inventory.json",
+        "workflow-inventory.md",
+    ),
+}
+
 
 def test_workflow_artifact_contracts_are_present() -> None:
     failures = []
@@ -52,5 +79,16 @@ def test_workflows_upload_artifacts_even_after_failures() -> None:
             failures.append(f"{workflow_path}: missing upload-artifact step")
         if "if: always()" not in content:
             failures.append(f"{workflow_path}: artifact upload is not always-on")
+
+    assert failures == []
+
+
+def test_registered_scripts_emit_json_and_markdown_artifacts() -> None:
+    failures = []
+    for script_path, artifact_names in REGISTERED_SCRIPT_ARTIFACTS.items():
+        content = (Path.cwd() / script_path).read_text(encoding="utf-8")
+        for artifact_name in artifact_names:
+            if artifact_name not in content:
+                failures.append(f"{script_path}: missing {artifact_name}")
 
     assert failures == []
