@@ -23,10 +23,31 @@ REQUIRED_REPOSITORY_STRUCTURE_TOKENS = (
 )
 
 
+def readme_text() -> str:
+    return (Path.cwd() / "README.md").read_text(encoding="utf-8")
+
+
+def repository_structure_section(readme: str) -> str:
+    start = readme.index("## Repository structure")
+    end = readme.index("## Workflows", start)
+    return readme[start:end]
+
+
 def test_readme_preserves_repository_structure_tokens() -> None:
-    readme = (Path.cwd() / "README.md").read_text(encoding="utf-8")
+    readme = readme_text()
     missing = [
         token for token in REQUIRED_REPOSITORY_STRUCTURE_TOKENS if token not in readme
+    ]
+
+    assert missing == []
+
+
+def test_readme_repository_structure_tokens_are_in_section() -> None:
+    section = repository_structure_section(readme_text())
+    missing = [
+        token
+        for token in REQUIRED_REPOSITORY_STRUCTURE_TOKENS
+        if token not in section
     ]
 
     assert missing == []
