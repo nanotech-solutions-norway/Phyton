@@ -14,8 +14,25 @@ REQUIRED_PURPOSE_TOKENS = (
 )
 
 
+def readme_text() -> str:
+    return (Path.cwd() / "README.md").read_text(encoding="utf-8")
+
+
+def purpose_section(readme: str) -> str:
+    start = readme.index("## Purpose")
+    end = readme.index("## Operating posture", start)
+    return readme[start:end]
+
+
 def test_readme_preserves_purpose_tokens() -> None:
-    readme = (Path.cwd() / "README.md").read_text(encoding="utf-8")
+    readme = readme_text()
     missing = [token for token in REQUIRED_PURPOSE_TOKENS if token not in readme]
+
+    assert missing == []
+
+
+def test_readme_purpose_tokens_are_in_purpose_section() -> None:
+    section = purpose_section(readme_text())
+    missing = [token for token in REQUIRED_PURPOSE_TOKENS if token not in section]
 
     assert missing == []
