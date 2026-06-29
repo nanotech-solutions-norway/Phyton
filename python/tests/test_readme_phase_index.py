@@ -22,6 +22,7 @@ REQUIRED_PHASE_INDEX_ENTRIES = (
     "python/tests/test_operating_posture_readme_index.py",
     "python/tests/test_out_of_scope_readme_index.py",
     "python/tests/test_purpose_readme_index.py",
+    "python/tests/test_repository_structure_readme_index.py",
 )
 
 
