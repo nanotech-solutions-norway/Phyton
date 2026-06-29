@@ -18,10 +18,6 @@ REQUIRED_OUT_OF_SCOPE_TOKENS = (
 
 def test_readme_preserves_out_of_scope_tokens() -> None:
     readme = (Path.cwd() / "README.md").read_text(encoding="utf-8")
-    missing = [
-        token
-        for token in REQUIRED_OUT_OF_SCOPE_TOKENS
-        if token not in readme
-    ]
+    missing = [token for token in REQUIRED_OUT_OF_SCOPE_TOKENS if token not in readme]
 
     assert missing == []
