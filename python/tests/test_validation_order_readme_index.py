@@ -35,7 +35,9 @@ def readme_text() -> str:
 
 def test_readme_preserves_validation_order_section() -> None:
     readme = readme_text()
-    missing = [token for token in REQUIRED_VALIDATION_SECTION_TOKENS if token not in readme]
+    missing = [
+        token for token in REQUIRED_VALIDATION_SECTION_TOKENS if token not in readme
+    ]
 
     assert missing == []
 
