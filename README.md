@@ -1,6 +1,6 @@
-# Python GitHub Control Plane — 17:05, 29.06.2026
+# Python GitHub Control Plane — 17:20, 29.06.2026
 
-This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, control-plane readiness, operations handoff, validation evidence index, project instructions, deferred capability roadmap, test coverage, documentation index guardrails, workflow policy guardrails, registered script path guardrails, artifact contract guardrails, workflow trigger guardrails, dependency file guardrails, Python runtime version guardrails, write boundary guardrails, manual workflow input guardrails, README phase index guardrails, registered script README index guardrails, workflow README index guardrails, and validation order README guardrails layer for NanoTech Solutions Norway projects.
+This repository is the separate Python execution, testing, debugging, validation, artifact inspection, failure triage, controlled script expansion, read-only repository intelligence, repository health-report, control-plane readiness, operations handoff, validation evidence index, project instructions, deferred capability roadmap, test coverage, documentation index guardrails, workflow policy guardrails, registered script path guardrails, artifact contract guardrails, workflow trigger guardrails, dependency file guardrails, Python runtime version guardrails, write boundary guardrails, manual workflow input guardrails, README phase index guardrails, registered script README index guardrails, workflow README index guardrails, validation order README guardrails, and operating posture README guardrails layer for NanoTech Solutions Norway projects.
 
 Repository name: `nanotech-solutions-norway/Phyton`
 
@@ -66,6 +66,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `python/tests/test_registered_script_readme_index.py` | Phase 22 registered script README index guardrail tests. |
 | `python/tests/test_workflow_readme_index.py` | Phase 23 workflow README index guardrail tests. |
 | `python/tests/test_validation_order_readme_index.py` | Phase 24 validation order README guardrail tests. |
+| `python/tests/test_operating_posture_readme_index.py` | Phase 25 operating posture README guardrail tests. |
 
 ## Workflows
 
