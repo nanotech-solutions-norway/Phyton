@@ -33,6 +33,7 @@ REQUIRED_WORKFLOWS = (
     ".github/workflows/manual-python-validate-registry.yml",
 )
 NON_EXECUTABLE_SCRIPT_FILES = {"__init__.py"}
+CANDIDATE_SCRIPT_FILES = {"documentation_inventory.py"}
 
 
 def enforce_development_environment() -> None:
@@ -70,12 +71,26 @@ def find_unregistered_scripts(repo_root: Path) -> list[str]:
         return ["Missing scripts directory: python/scripts"]
 
     for script_path in sorted(scripts_dir.glob("*.py")):
-        if script_path.name in NON_EXECUTABLE_SCRIPT_FILES:
+        if script_path.name in NON_EXECUTABLE_SCRIPT_FILES | CANDIDATE_SCRIPT_FILES:
             continue
         relative_path = str(script_path.relative_to(repo_root))
         if relative_path not in registered_paths:
             unregistered.append(relative_path)
     return unregistered
+
+
+def find_candidate_scripts(repo_root: Path) -> list[str]:
+    """Return explicitly tracked candidate scripts that are not registered yet."""
+
+    scripts_dir = repo_root / "python" / "scripts"
+    if not scripts_dir.is_dir():
+        return []
+
+    return [
+        str((scripts_dir / file_name).relative_to(repo_root))
+        for file_name in sorted(CANDIDATE_SCRIPT_FILES)
+        if (scripts_dir / file_name).is_file()
+    ]
 
 
 def classify_health(findings: list[str], warnings: list[str]) -> str:
@@ -112,6 +127,13 @@ def build_health_report(repo_root: Path) -> dict[str, Any]:
             for script_path in unregistered_scripts
         )
 
+    candidate_scripts = find_candidate_scripts(repo_root)
+    if candidate_scripts:
+        warnings.extend(
+            f"Candidate Python script not registered: {script_path}"
+            for script_path in candidate_scripts
+        )
+
     if registry_report.status != "success":
         findings.extend(registry_report.errors)
 
@@ -129,6 +151,7 @@ def build_health_report(repo_root: Path) -> dict[str, Any]:
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "findings": findings,
         "warnings": warnings,
+        "candidate_scripts": candidate_scripts,
         "registered_scripts": sorted(SCRIPT_ALLOWLIST),
         "repository_summary": {
             "file_count": repository_inventory["file_count"],
@@ -164,6 +187,7 @@ def write_markdown_report(output_path: Path, report: dict[str, Any]) -> None:
         f"- Workflows: {report['workflow_summary']['workflow_count']}",
         f"- Dependencies: {report['dependency_summary']['dependency_count']}",
         f"- Registered scripts: {len(report['registered_scripts'])}",
+        f"- Candidate scripts: {len(report['candidate_scripts'])}",
         "",
         "## Findings",
         "",
@@ -182,6 +206,10 @@ def write_markdown_report(output_path: Path, report: dict[str, Any]) -> None:
 
     lines.extend(["", "## Registered scripts", ""])
     lines.extend(f"- `{script}`" for script in report["registered_scripts"])
+
+    if report["candidate_scripts"]:
+        lines.extend(["", "## Candidate scripts", ""])
+        lines.extend(f"- `{script}`" for script in report["candidate_scripts"])
 
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
