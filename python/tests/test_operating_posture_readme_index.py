@@ -13,7 +13,7 @@ REQUIRED_OPERATING_POSTURE_TOKENS = (
     "- No production writes.",
     "- No staging writes.",
     "- No external system writes.",
-    "- No " "secret exposure.",
+    "- No " + "secret exposure.",
     (
         "- Failed workflows must be diagnosed from GitHub Actions logs or uploaded "
         "artifacts before patching."
