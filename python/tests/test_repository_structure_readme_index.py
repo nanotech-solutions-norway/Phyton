@@ -45,9 +45,7 @@ def test_readme_preserves_repository_structure_tokens() -> None:
 def test_readme_repository_structure_tokens_are_in_section() -> None:
     section = repository_structure_section(readme_text())
     missing = [
-        token
-        for token in REQUIRED_REPOSITORY_STRUCTURE_TOKENS
-        if token not in section
+        token for token in REQUIRED_REPOSITORY_STRUCTURE_TOKENS if token not in section
     ]
 
     assert missing == []
