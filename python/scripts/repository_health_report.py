@@ -111,8 +111,8 @@ def build_health_report(repo_root: Path) -> dict[str, Any]:
     dependency_inventory = collect_dependency_inventory(repo_root)
     registry_report = validate_registry(repo_root)
 
-    findings = []
-    warnings = []
+    findings: list[str] = []
+    warnings: list[str] = []
     findings.extend(
         check_required_paths(repo_root, REQUIRED_DOCS, "documentation file")
     )
