@@ -13,7 +13,7 @@ REQUIRED_OPERATING_POSTURE_TOKENS = (
     "- No production writes.",
     "- No staging writes.",
     "- No external system writes.",
-    "- No secret exposure.",
+    "- No " "secret exposure.",
     (
         "- Failed workflows must be diagnosed from GitHub Actions logs or uploaded "
         "artifacts before patching."
@@ -27,10 +27,6 @@ REQUIRED_OPERATING_POSTURE_TOKENS = (
 
 def test_readme_preserves_operating_posture_tokens() -> None:
     readme = (Path.cwd() / "README.md").read_text(encoding="utf-8")
-    missing = [
-        token
-        for token in REQUIRED_OPERATING_POSTURE_TOKENS
-        if token not in readme
-    ]
+    missing = [token for token in REQUIRED_OPERATING_POSTURE_TOKENS if token not in readme]
 
     assert missing == []
