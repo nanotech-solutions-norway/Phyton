@@ -31,7 +31,11 @@ def test_readme_indexes_workflow_paths() -> None:
 
 def test_readme_indexes_workflow_names() -> None:
     readme = (Path.cwd() / "README.md").read_text(encoding="utf-8")
-    missing = [name for name in map(workflow_name, workflow_paths()) if f"`{name}`" not in readme]
+    missing = [
+        name
+        for name in map(workflow_name, workflow_paths())
+        if f"`{name}`" not in readme
+    ]
 
     assert missing == []
 
