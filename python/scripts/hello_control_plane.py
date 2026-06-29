@@ -29,8 +29,23 @@ def build_payload() -> dict[str, str]:
     }
 
 
+def write_markdown_report(output_path: Path, payload: dict[str, str]) -> None:
+    """Write a Markdown hello-control-plane report."""
+
+    lines = [
+        "# Hello Control Plane Report",
+        "",
+        f"Generated UTC: {payload['created_at_utc']}",
+        f"Status: {payload['status']}",
+        f"Script: {payload['script']}",
+        f"Target environment: {payload['target_environment']}",
+        f"Execution model: {payload['execution_model']}",
+    ]
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> int:
-    """Write a small JSON output artifact."""
+    """Write JSON and Markdown output artifacts."""
 
     output_dir = Path(
         os.environ.get("PYTHON_CONTROL_PLANE_OUTPUT_DIR", "artifacts/python-run")
@@ -43,6 +58,7 @@ def main() -> int:
         json.dumps(payload, indent=2, sort_keys=True),
         encoding="utf-8",
     )
+    write_markdown_report(output_dir / "hello-control-plane-output.md", payload)
 
     print("hello_control_plane completed in development mode.")
     return 0
