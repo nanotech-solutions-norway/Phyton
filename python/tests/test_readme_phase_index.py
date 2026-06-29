@@ -17,6 +17,7 @@ REQUIRED_PHASE_INDEX_ENTRIES = (
     "python/tests/test_manual_workflow_inputs.py",
     "python/tests/test_readme_phase_index.py",
     "python/tests/test_registered_script_readme_index.py",
+    "python/tests/test_workflow_readme_index.py",
 )
 
 
