@@ -121,15 +121,11 @@ The following remain out of scope unless separately approved:
 - arbitrary command execution;
 - modifications to project data outside this repository.
 
-## Recommended next phase
+## Phase 40 closure note
 
-The recommended next phase is:
+Python Control Plane v1.0 is closed when the standard validation workflows pass after Phase 40.
 
-```text
-Phase 36 — Registered Script Authoring Guide
-```
-
-Phase 36 should document exactly how future read-only registered scripts may be added without introducing arbitrary execution or write/live capability.
+Do not continue adding phases without a specific operational need. Future work should start from a concrete requested capability, correction, or report requirement.
 
 ## Validation for this phase
 
