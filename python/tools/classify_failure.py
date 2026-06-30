@@ -18,6 +18,16 @@ class FailureClassification:
 
 SIGNALS: tuple[tuple[str, str, str, tuple[str, ...]], ...] = (
     (
+        "report_attention_required",
+        "medium",
+        "high",
+        (
+            "completed with status: attention_required",
+            '"status": "attention_required"',
+            "status: attention_required",
+        ),
+    ),
+    (
         "policy_guardrail_failure",
         "high",
         "high",
@@ -60,7 +70,10 @@ SIGNALS: tuple[tuple[str, str, str, tuple[str, ...]], ...] = (
         (
             "ruff check",
             "ruff format",
+            "ruff format --check",
             "would reformat",
+            "file would be reformatted",
+            "files would be reformatted",
             "found 1 error",
             "formatting check failed",
         ),
@@ -71,10 +84,12 @@ SIGNALS: tuple[tuple[str, str, str, tuple[str, ...]], ...] = (
         "high",
         (
             "mypy",
+            "need type annotation",
             "error:",
             "found 1 error in",
             "found 2 errors in",
             "incompatible return value type",
+            "has incompatible type",
         ),
     ),
     (
