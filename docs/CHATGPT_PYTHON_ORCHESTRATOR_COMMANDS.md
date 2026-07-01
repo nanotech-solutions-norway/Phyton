@@ -49,7 +49,9 @@ Current registered script keys:
 - `repository_inventory`
 - `workflow_inventory`
 - `dependency_inventory`
+- `documentation_inventory`
 - `repository_health_report`
+- `control_plane_readiness`
 
 ## Command: Python: debug failed run
 
