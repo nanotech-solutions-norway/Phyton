@@ -91,6 +91,7 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `repository_inventory` | Repository file inventory report. |
 | `workflow_inventory` | GitHub Actions workflow inventory report. |
 | `dependency_inventory` | Python dependency file inventory report. |
+| `documentation_inventory` | Documentation file inventory report. |
 | `repository_health_report` | Consolidated repository health report. |
 | `control_plane_readiness` | Control-plane readiness report. |
 
