@@ -83,14 +83,17 @@ def find_candidate_scripts(repo_root: Path) -> list[str]:
     """Return explicitly tracked candidate scripts that are not registered yet."""
 
     scripts_dir = repo_root / "python" / "scripts"
+    registered_paths = set(SCRIPT_ALLOWLIST.values())
     if not scripts_dir.is_dir():
         return []
 
-    return [
-        str((scripts_dir / file_name).relative_to(repo_root))
-        for file_name in sorted(CANDIDATE_SCRIPT_FILES)
-        if (scripts_dir / file_name).is_file()
-    ]
+    candidates = []
+    for file_name in sorted(CANDIDATE_SCRIPT_FILES):
+        script_path = scripts_dir / file_name
+        relative_path = str(script_path.relative_to(repo_root))
+        if script_path.is_file() and relative_path not in registered_paths:
+            candidates.append(relative_path)
+    return candidates
 
 
 def classify_health(findings: list[str], warnings: list[str]) -> str:
