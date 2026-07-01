@@ -26,6 +26,7 @@ MANUAL_RUN_REQUIRED_OPTIONS = (
     "repository_inventory",
     "workflow_inventory",
     "dependency_inventory",
+    "documentation_inventory",
     "repository_health_report",
     "control_plane_readiness",
 )
