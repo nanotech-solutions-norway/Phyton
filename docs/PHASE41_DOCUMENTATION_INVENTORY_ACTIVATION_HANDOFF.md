@@ -2,7 +2,7 @@
 
 ## Status
 
-Phase 41 is complete and validated.
+Phase 41 implementation is complete. The implementation and fix commits were validated before this handoff note was added.
 
 ## Repository
 
@@ -24,7 +24,7 @@ Activate the existing `documentation_inventory` script as a registered, fixed-ch
 
 ## Validation evidence
 
-The following workflows passed after the fix:
+The following workflows passed after the implementation fix:
 
 - `CI - Python Quality Gate`
 - `CI - Python Full Validation`
@@ -38,6 +38,15 @@ Latest confirmed artifacts:
 
 - `python-quality-test-results`, artifact ID `8024908074`
 - `python-full-validation-artifacts`, artifact ID `8024910502`
+
+## Handoff-note validation status
+
+This handoff note is documentation-only. If this commit triggers repository workflows, validate with:
+
+- `CI - Python Quality Gate`
+- `CI - Python Full Validation`
+
+Do not treat the handoff-note commit as separately validated until those workflows report success.
 
 ## Operating boundary preserved
 
