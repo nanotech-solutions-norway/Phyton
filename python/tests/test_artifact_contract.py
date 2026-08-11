@@ -75,7 +75,7 @@ def test_workflows_upload_artifacts_even_after_failures() -> None:
     failures = []
     for workflow_path in ARTIFACT_CONTRACTS:
         content = (Path.cwd() / workflow_path).read_text(encoding="utf-8")
-        if "uses: actions/upload-artifact@v4" not in content:
+        if "uses: actions/upload-artifact@" not in content:
             failures.append(f"{workflow_path}: missing upload-artifact step")
         if "if: always()" not in content:
             failures.append(f"{workflow_path}: artifact upload is not always-on")

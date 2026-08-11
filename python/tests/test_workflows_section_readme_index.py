@@ -23,5 +23,6 @@ def test_readme_preserves_workflows_section_row_count() -> None:
     readme = (Path.cwd() / "README.md").read_text(encoding="utf-8")
     section = workflows_section(readme)
     rows = [line for line in section.splitlines() if line.startswith("| `")]
+    workflow_files = list((Path.cwd() / ".github" / "workflows").glob("*.yml"))
 
-    assert len(rows) == 6
+    assert len(rows) == len(workflow_files)
