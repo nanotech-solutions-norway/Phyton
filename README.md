@@ -41,6 +41,10 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `.github/workflows/manual-python-debug.yml` | Manual debug workflow. |
 | `.github/workflows/manual-python-inspect-artifacts.yml` | Manual artifact inspection and failure triage workflow. |
 | `.github/workflows/manual-python-validate-registry.yml` | Manual registry synchronization validation workflow. |
+| `.github/workflows/codeql.yml` | CodeQL security scanning workflow. |
+| `.github/workflows/dependency-review.yml` | Dependency review workflow. |
+| `.github/workflows/repository-security-baseline.yml` | Existing repository security baseline workflow. |
+| `.github/workflows/security-baseline.yml` | GitHub Pro security baseline workflow. |
 | `docs/PYTHON_CONTROL_PLANE.md` | Control-plane specification. |
 | `docs/CHATGPT_PYTHON_ORCHESTRATOR_COMMANDS.md` | ChatGPT orchestration commands. |
 | `docs/PHASE2_ARTIFACT_INSPECTION_AND_FAILURE_TRIAGE.md` | Phase 2 artifact inspection and triage specification. |
@@ -82,6 +86,10 @@ Use GitHub Actions as the execution runtime for controlled Python operations. Ch
 | `Manual - Python Run Script` | Development-only registered Python script execution. |
 | `Manual - Python Inspect Artifacts` | Read-only local artifact inspection and failure classification. |
 | `Manual - Python Validate Registry` | Validate allowlist and workflow script choices stay synchronized. |
+| `CodeQL` | Code scanning for supported languages. |
+| `Dependency review` | Reviews dependency changes for known vulnerabilities. |
+| `Repository security baseline` | Existing repository security baseline checks. |
+| `Security baseline` | GitHub Pro baseline secret-file and high-confidence credential checks. |
 
 ## Registered scripts
 
